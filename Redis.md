@@ -70,3 +70,21 @@ redis-cli shutdown
 | 增加指定值 | incrby num 10 | 使num加10 |
 | 减去指定值 | decrby num 10 | 使num减10 |
 | 字符串拼接 | append name "123" | 在name后面追加123 |
+
+## 3.2 哈希命令
+
+哈希的结构示意图如下：
+![avatar](https://raw.githubusercontent.com/hsk287416/LinuxNote/master/imgs/2018-08-11_081318.png)
+
+| 命令类型 | 命令代码 | 说明 |
+| -- | -- | -- |
+| 赋值 | hset user:1 name hushukang | 为user:1的name属性赋值为hushukang |
+| 取值 | hget user:1 name | 获取user:1中name属性的值 |
+| 删除 | hdel user:1 name | 删除user:1中的name属性 |
+| 判断指定key中属性是否存在 | hexists user:1 address | 判断user:1中是否存在address属性 |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
+|  |  |  |
