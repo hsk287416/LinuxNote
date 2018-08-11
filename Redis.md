@@ -73,7 +73,7 @@ redis-cli shutdown
 
 ## 3.2 哈希命令
 
-哈希的结构示意图如下：
+哈希的数据结构如下：
 ![avatar](https://raw.githubusercontent.com/hsk287416/LinuxNote/master/imgs/2018-08-11_081318.png)
 
 | 命令类型 | 命令代码 | 说明 |
@@ -82,9 +82,22 @@ redis-cli shutdown
 | 取值 | hget user:1 name | 获取user:1中name属性的值 |
 | 删除 | hdel user:1 name | 删除user:1中的name属性 |
 | 判断指定key中属性是否存在 | hexists user:1 address | 判断user:1中是否存在address属性 |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| 获取属性数量 | hlen user:1 | 获取user:1中的属性数量 |
+
+## 3.3 列表命令
+
+列表的数据结构如下：
+![avatar](https://raw.githubusercontent.com/hsk287416/LinuxNote/master/imgs/2018-08-11_084239.png)
+
+| 命令类型 | 命令代码 | 说明 |
+| -- | -- | -- |
+| 插入值 | rpush key value1 value2 ... valueN | 向列表的右端插入一个值 |
+| 插入值 | lpush key value1 value2 ... valueN | 向列表的左端插入一个值 |
+| 插入值 | linsert key before|after value newValue | 在list指定的值前|后插入newValue |
+| 弹出元素 | lpop key | 从列表左侧弹出一个元素 |
+| 弹出元素 | rpop key | 从列表右侧弹出一个元素 |
+| 删除元素 | lrem key count value | 根据count值，从列表中删除所有value相等的元素。<br>1). count > 0，从左到右，删除最多的count个value相等的元素<br>2). count < 0，从右到左，删除最多Math.abs(count)个value相等的元素<br>3). count = 0，删除所有value相等的元素 |
+| 删除范围 | ltrim key start end | 截取索引范围内的列表并删除，索引从0开始 |
+| 获取范围 | lrange key start end | 获取列表指定索引范围内的所有item |
+| 获取索引 | lindex key index | 获取列表指定索引的item |
+| 获取列表长度 | llen key | 获取列表长度 |
