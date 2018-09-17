@@ -101,3 +101,34 @@ redis-cli shutdown
 | 获取范围 | lrange key start end | 获取列表指定索引范围内的所有item |
 | 获取索引 | lindex key index | 获取列表指定索引的item |
 | 获取列表长度 | llen key | 获取列表长度 |
+| 重新赋值 | lset key index newValue | 设置列表指定索引值为newValue |
+
+## 3.4 集合命令
+
+集合的数据结构如下：
+![avatar](https://raw.githubusercontent.com/hsk287416/LinuxNote/master/imgs/2018-08-11_095849.png)
+
+| 命令类型 | 命令代码 | 说明 |
+| -- | -- | -- |
+| 添加 | sadd key item | 向集合key中添加一个item，如果item已经存在则添加失败 |
+| 删除 | srem key item | 从集合key中删除一个item |
+| 随机取出一个元素 | srandmember key | 从集合key中随机取出一个元素 |
+| 随机弹出一个元素 | spop key | 从集合key中随机取出并删除一个元素 |
+| 取出所有元素 | smembers key | 取出集合key中所有的元素 |
+| 算出集合中的元素个数 | scard key | 算出集合key中的元素个数 |
+| 判断存在 | sismember key item | 判断集合key中时候有指定元素 |
+| 集合间操作--差集 | sdiff key1 key2 | 获取两个集合的差集 |
+| 集合间操作--并集 | sinter key1 key2 | 获取两个集合的并集 |
+| 集合间操作--合并 | sunion key1 key2 | 合并两个集合（去除重复元素） |
+
+# 4. Jedis
+
+安装Maven依赖：
+```xml
+<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>2.9.0</version>
+</dependency>
+```
