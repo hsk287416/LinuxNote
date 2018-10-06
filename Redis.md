@@ -28,17 +28,19 @@ make && make install
 首先要修改配置文件redis.conf如下：
 ```text
 daemonize no => daemonize yes
+bind 127.0.0.1 => #bind 127.0.0.1
+protected-mode yes => protected-mode no
 ```
 
 然后启动服务端：
 ```text
+# 启动服务器时，要加上配置文件的路径（可以是相对也可以是绝对）
 redis-server redis.conf
 ```
 
 ## 2.2 运行客户端
 ```text
-#启动服务器时，要加上配置文件的路径（可以是相对也可以是绝对）
-redis-server redis.conf
+redis-cli
 ```
 
 ## 2.3 关闭服务器
@@ -132,3 +134,9 @@ redis-cli shutdown
     <version>2.9.0</version>
 </dependency>
 ```
+
+# 5. 慢查询
+
+## 5.1 生命周期
+
+## 5.2 三个命令
