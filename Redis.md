@@ -27,6 +27,7 @@ make && make install
 
 首先要修改配置文件redis.conf如下：
 ```text
+port 6379 => port [自定义端口号]
 daemonize no => daemonize yes
 bind 127.0.0.1 => #bind 127.0.0.1
 protected-mode yes => protected-mode no
@@ -135,8 +136,57 @@ redis-cli shutdown
 </dependency>
 ```
 
-# 5. 慢查询
+# 5. pipeline
 
-## 5.1 生命周期
+当我们从Redis中存取数据时，所消耗的时间等于两次网络通信时间（来回各一次）+Redis命令执行时间。如果我们要存入一万条数据，那么就需要20000 * 网络通信时间 + 10000Redis命令执行时间。我们知道，Redis命令执行速度是非常快的，可以在微秒单位内做出响应。然而网络通信时间是一个不可控的因素。因此，如果一万条数据要逐条保存的话，需要消耗大量的时间，而如果我们能把多个Redis命令打包起来，一次性发给Redis服务器，那么就会节省很多的网络通信时间。
 
-## 5.2 三个命令
+没有pipeline
+```java
+// 执行10000次hset命令时，我们逐个执行
+// 消耗时间：50s
+Jedis jedis = new Jedis("127.0.0.1", 6379);
+for (int i = 0; i < 10000; i++) {
+    jedis.hset("hashkey:" + i, "field" + i, "value" + i);
+}
+```
+
+使用pipeline
+```java
+// 执行10000次hset命令时，我们将每100条命令打成一个包，一起发给服务器
+// 消耗时间：0.7s
+Jedis jedis = new Jedis("127.0.0.1", 6379);
+for (int i = 0; i < 100; i++) {
+    Pipeline pipeline = jedis.pipelined();
+    for (int j = 1 * 100; j < (i + 1) * 100; j++) {
+        pipeline.hset("hashkey:" + j, "field" + j, "value" + j);
+    }
+    pipeline.syncAndReturnAll();
+}
+```
+
+# 6. 主从复制
+
+修改从节点的配置如下：
+```text
+slaveof ip port
+slave-read-only yes
+pidfile /var/run/redis-[自己的port].pid
+dbfilename dump-[自己的port].rdb
+```
+
+# 7. Redis Sentine架构
+
+# 7.1 主要配置
+```shell
+port [sentinel port]
+daemonize yes
+protected-mode no
+dir "..."
+logfile "..."
+# 2的意思是，至少有2各sentinel发现当前master出现故障，才触发故障转移
+sentinel monitor mymaster [hostname] [port] 2
+sentinel down-after-milliseconds mymaster 5000
+sentinel parallel-syncs mymaster 1
+sentinel failover-timeout mymaster 180000
+```
+
